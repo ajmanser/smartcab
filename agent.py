@@ -45,8 +45,8 @@ class LearningAgent(Agent):
             self.alpha=0
         else:
             self.total_trials+=1
-            self.epsilon=.99**self.total_trials
-            #self.epsilon=1-(0.05*self.total_trials)
+            #self.epsilon=.99**self.total_trials
+            self.epsilon=1-(0.05*self.total_trials)
 
         return None
 
@@ -92,7 +92,7 @@ class LearningAgent(Agent):
         # When learning, check if the 'state' is not in the Q-table
         # If it is not, create a new dictionary for that state
         #   Then, for each action available, set the initial Q-value to 0.0
-        if state not in self.Q:
+        if self.learning and state not in self.Q:
             self.Q[state]={None:0, 'right':0,'left':0,'forward':0}
         return
 
@@ -140,8 +140,9 @@ class LearningAgent(Agent):
         ###########
         # When learning, implement the value iteration update rule
         #   Use only the learning rate 'alpha' (do not use the discount factor 'gamma')
-        current=self.Q[state][action]
+
         if self.learning:
+            current=self.Q[state][action]
             self.Q[state][action]=(1-self.alpha)*current+self.alpha*reward
 
         return
@@ -194,14 +195,14 @@ def run():
     #   display      - set to False to disable the GUI if PyGame is enabled
     #   log_metrics  - set to True to log trial and simulation results to /logs
     #   optimized    - set to True to change the default log file name
-    sim = Simulator(env, update_delay=.0001, log_metrics=True, optimized=True)
+    sim = Simulator(env, update_delay=.0001, log_metrics=True)
 
     ##############
     # Run the simulator
     # Flags:
     #   tolerance  - epsilon tolerance before beginning testing, default is 0.05
     #   n_test     - discrete number of testing trials to perform, default is 0
-    sim.run(n_test=100, tolerance=0.01)
+    sim.run(n_test=10)
 
 
 if __name__ == '__main__':

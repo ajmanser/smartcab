@@ -13589,7 +13589,7 @@ The car is very often making bad decisions as seen in the bad action visual wher
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer:</strong></p>
 <p>For safety 'light', 'left', and 'oncoming' are all relevant features.  These deal with laws and protecting against car accidents.  For efficiency 'waypoint' is relevant.  This deals with getting to the destination the most efficient way.</p>
-<p>Features that I exlcuded were 'deadline' because this deals with the number of actions left before time runs out, and 'right' as we are in the right lane and in this model not passing therefore we won't have cars to our right (also we have right hand traffic). 'Deadline' shouldn't improve safety obviously, and it shouldn't improve efficiency either because we are already traveling in the most efficient path according to our 'waypoint' feature.</p>
+<p>Features that I exlcuded were 'deadline' because this deals with the number of actions left before time runs out, and 'right' as this simulation has US traffic laws and we will never have to worry about traffic coming from the right-side of an intersection as it won't have the right of way assuming we and the traffic obey traffic light laws (we will be stopped by red lights, or they will be). 'Deadline' shouldn't improve safety obviously, and it shouldn't improve efficiency either because we are already traveling in the most efficient path according to our 'waypoint' feature.  'Deadline' could also encourage breaking traffic laws and decreasing safety as time runs out.</p>
 
 </div>
 </div>
@@ -18210,7 +18210,8 @@ SZIkSZI0EgZTkiRJkiRJGon/A0N1AbcI73KsAAAAAElFTkSuQmCC
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer:</strong></p>
 <p>The decay function that I ended up settling on was the epsilon=a^t with a=.99 and t as the number of trials starting at 1.  I tried a few others with mixed results, but liked this one the best.  With that decay function it ended up being approximately 450 training trials before epsilon hit 0 and the simulation began testing.  I wanted to pick an a that was very close to 1, but just slightly less, so I initially chose .9999, but it was decaying too slowly, so I tried .99 which seemed reasonable.  I let the learning rate alpha stay at it's default of .5 which I would have considered tuning more if my testing trials wouldn't have turned out so well.</p>
-<p>Compared to my default Q-Learner the Reliability went from an 'F' to an 'A', and Safety went from an 'F' to an 'A+' which is a pretty huge improvement.  I would say that my Q-learner driving agent successfully learned an appropriate policy, and that I am satisfied with the Safety and Reliability ratings of the Smartcab.  Given an 'A+' Safety rating, and an 'A' Reliability, it seems like this agent is well tuned to drive successfully in the simulation.</p>
+<p>Compared to my default Q-Learner the Reliability went from an 'F' to an 'A', and Safety went from an 'F' to an 'A+' which is a pretty huge improvement.  In regards to performance (penalties and accidents) 'Total Bad Actions' decreased from approximately 12% to almost 0% with a few minor blips in the improved learning agent.  The default Q-Learner had a steady increase in rewards, but at the end of the trials it was still in negative territory, while the average reward per action was consistently positive for the improved Q-Learner leveling out at close to an average of 2.</p>
+<p>I would say that my Q-learner driving agent successfully learned an appropriate policy, and that I am satisfied with the Safety and Reliability ratings of the Smartcab.  Given an 'A+' Safety rating, and an 'A' Reliability, it seems like this agent is well tuned to drive successfully in the simulation.</p>
 
 </div>
 </div>
@@ -18282,8 +18283,11 @@ Here the waypoint is telling us to go right, and there is oncoming traffic going
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer:</strong></p>
-<p>1) In regards to the Smartcab itself it is not Bayesian meaning it doesn't take into account previous actions to make new ones.  It is only aware of the exact choice it currently needs to make, not all past and future choices as well.  This would make future rewards not make sense.</p>
-<p>2) Regarding the environment it changes with every trial, so it wouldn't make sense to reward it for being in one specific place in the environment.</p>
+<p>The general problem:
+In regards to the Smartcab itself it is not Bayesian meaning it doesn't take into account previous actions to make new ones.  It is only aware of the exact choice it currently needs to make, not all past and future choices as well.  This would make future rewards not make sense.</p>
+<p>The specific characteristics are as follows:</p>
+<p>1) Regarding the environment it changes with every trial, so it wouldn't make sense to reward it for being in one specific place in the environment.</p>
+<p>2) The agent can only see its' current location, and cannot see the entire grid.  Because of this the agent would need a different perspective to model future states.</p>
 
 </div>
 </div>
